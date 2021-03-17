@@ -1,6 +1,6 @@
 function logger(req, res, next) {
   // DO YOUR MAGIC
-  console.log("Method: ", req.method, "URL: ", req.url, "Timestamp: ", req.timestamp);
+  console.log("\n Method:", req.method,"\n URL:", req.url, "\n Timestamp:", Date.now());
   next();
 };
 
@@ -17,3 +17,4 @@ function validatePost(req, res, next) {
 }
 
 // do not forget to expose these functions to other modules
+module.exports = { logger };
