@@ -19,10 +19,10 @@ async function validateUserId(req, res, next) {
       res.status(404).json({ message: "user not found" });
     };
   } catch (error) {
-    res.status(500).json({ message: "Error processing request", error: error});
+    res.status(500).json({ message: "Error processing request", error: error });
   };
   
-}
+};
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
@@ -37,14 +37,27 @@ function validateUser(req, res, next) {
       res.status(400).json({ message: "missing user data" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error processing request", error: error});
+    res.status(500).json({ message: "Error processing request", error: error });
   };
 
-}
+};
 
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
-}
+  try {
+    if (req.body && Object.keys(req.body).length>0) {
+      if (req.body.text) {
+        next();
+      } else {
+        res.status(400).json({ message: "missing required text field" });
+      };
+    } else {
+      res.status(400).json({ message: "missing post data" })
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error processing request", error: error });
+  };
+};
 
 // do not forget to expose these functions to other modules
 module.exports = { logger, validateUserId, validateUser, validatePost };
