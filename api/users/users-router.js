@@ -64,9 +64,16 @@ router.delete('/:id', middleware.validateUserId, (req, res) => {
     });
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', middleware.validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
+  Posts.getById(req.params.id)
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(err => {
+      console.error(err.message);
+    })
 });
 
 router.post('/:id/posts', (req, res) => {
