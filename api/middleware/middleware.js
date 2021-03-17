@@ -1,3 +1,5 @@
+const User = require('../users/users-model');
+
 function logger(req, res, next) {
   // DO YOUR MAGIC
   console.log("\n Method:", req.method,"\n URL:", req.url, "\n Timestamp:", Date.now());
@@ -6,8 +8,6 @@ function logger(req, res, next) {
 
 async function validateUserId(req, res, next) {
   // DO YOUR MAGIC
-  const User = require('../users/users-model');
-
   const {id} = req.params;
   const user = await User.getById(id);
 
@@ -26,6 +26,20 @@ async function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
+  try {
+    if (req.body && Object.keys(req.body).length>0) {
+      if(req.body.name) {
+        next();
+      } else {
+        res.status(400).json({ message: "missing required name field" });
+      };
+    } else {
+      res.status(400).json({ message: "missing user data" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error processing request", error: error});
+  };
+
 }
 
 function validatePost(req, res, next) {
