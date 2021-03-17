@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 router.get('/:id', middleware.validateUserId, (req, res) => {
   // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
-  res.json(req.user);
+  res.status(200).json(req.user);
 });
 
 router.post('/', middleware.validateUser, (req, res) => {
@@ -52,9 +52,16 @@ router.put('/:id', middleware.validateUserId, middleware.validateUser, (req, res
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', middleware.validateUserId, (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
+  Users.remove(req.params.id)
+    .then(user => {
+      res.status(200).message({ message: "User has been removed" });
+    })
+    .catch(err => {
+      console.error(err.message);
+    });
 });
 
 router.get('/:id/posts', (req, res) => {
