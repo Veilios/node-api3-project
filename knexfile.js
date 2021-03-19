@@ -1,3 +1,5 @@
+const knex = require('knex')('production')
+
 const sharedConfig = {
   client: 'sqlite3',
   useNullAsDefault: true,
